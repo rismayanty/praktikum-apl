@@ -2,7 +2,7 @@
 #include <iomanip>
 using namespace std;
 
-struct User {
+struct user {
     string username;
     string password;
     string role;
@@ -24,8 +24,16 @@ struct member {
 };
 
 #define MAX_MEMBER 100
-#define MAX_USER 20
+#define MAX_user 20
 #define PERTEMUAN_PER_BULAN 4
+
+// fungsi rekursif
+int hitungpertemuan(int bulan) {
+    if (bulan <= 0) {
+        return 0;
+    }
+    return PERTEMUAN_PER_BULAN + hitungpertemuan(bulan - 1);
+}
 
 string infohari(string namapaket) {
     if (namapaket == "SUN") {
@@ -76,6 +84,18 @@ string inputharivalid(string namapaket) {
             }
         }
     }
+}
+
+// FUNGSI OVERLOADING
+int hargapaket(string namapaket, int bulan) {
+    int hargaPerSesi;
+    if (namapaket == "SUN") hargaPerSesi = 450;
+    else if (namapaket == "MOON") hargaPerSesi = 500;
+    else if (namapaket == "STAR") hargaPerSesi = 650;
+    else hargaPerSesi = 0;
+    
+    int totalPertemuan = hitungpertemuan(bulan);
+    return hargaPerSesi * totalPertemuan;
 }
 
 int hargapaket(string namapaket) {
@@ -142,7 +162,6 @@ void tampilkaninfopaket() {
     cout << "====================================================" << endl;
 }
 
-
 // CREATE
 void buatmember(member members[], int &jumlahmember, string username) {
     for (int i = 0; i < jumlahmember; i++) {
@@ -189,8 +208,8 @@ void buatmember(member members[], int &jumlahmember, string username) {
         members[jumlahmember] = baru;
         jumlahmember++;
         
-        int totalPertemuan = PERTEMUAN_PER_BULAN * baru.detail.bulanMember;
-        int total = baru.detail.harga * totalPertemuan;
+        int totalPertemuan = hitungpertemuan(baru.detail.bulanMember);
+        int total = hargapaket(baru.namapaket, baru.detail.bulanMember);
         
         cout << "\n[+] YEY AKUN MEMBER UDAH ADA!" << endl;
         cout << "      Paket           : " << baru.namapaket << endl;
@@ -217,7 +236,7 @@ void bacasemuadata(member members[], int jumlahmember) {
         cout << "======================================================================================" << endl;
         cout << left << setw(4) << "ID" 
              << setw(15) << "Nama member" 
-             << setw(15) << "Username"
+             << setw(15) << "username"
              << setw(8)  << "Paket"
              << setw(10) << "Hari"
              << setw(12) << "Jam sesi"
@@ -226,8 +245,8 @@ void bacasemuadata(member members[], int jumlahmember) {
         cout << "--------------------------------------------------------------------------------" << endl;
         
         for (int i = 0; i < jumlahmember; i++) {
-            int totalPertemuan = PERTEMUAN_PER_BULAN * members[i].detail.bulanMember;
-            int total = members[i].detail.harga * totalPertemuan;
+            int totalPertemuan = hitungpertemuan(members[i].detail.bulanMember);
+            int total = hargapaket(members[i].namapaket, members[i].detail.bulanMember);
             
             cout << left << setw(4) << members[i].id
                  << setw(18) << members[i].nama
@@ -242,14 +261,13 @@ void bacasemuadata(member members[], int jumlahmember) {
     }
 }
 
-// READ
 void bacadatasaya(member members[], int jumlahmember, string username) {
     bool ditemukan = false;
     
     for (int i = 0; i < jumlahmember; i++) {
         if (members[i].username == username) {
-            int totalPertemuan = PERTEMUAN_PER_BULAN * members[i].detail.bulanMember;
-            int total = members[i].detail.harga * totalPertemuan;
+            int totalPertemuan = hitungpertemuan(members[i].detail.bulanMember);
+            int total = hargapaket(members[i].namapaket, members[i].detail.bulanMember);
             
             cout << "\n=====================================" << endl;
             cout << "             DATA MEMBER ANDA          " << endl;
@@ -317,8 +335,8 @@ void updatedatamember(member members[], int jumlahmember) {
             
             members[idx].detail.harga = hargapaket(members[idx].namapaket);
             
-            int totalPertemuan = PERTEMUAN_PER_BULAN * members[idx].detail.bulanMember;
-            int total = members[idx].detail.harga * totalPertemuan;
+            int totalPertemuan = hitungpertemuan(members[idx].detail.bulanMember);
+            int total = hargapaket(members[idx].namapaket, members[idx].detail.bulanMember);
             
             cout << "\n[+] Paket member \"" << members[idx].nama << "\" YEY UPDATE BERHASIL!" << endl;
             cout << "    Total Pertemuan : " << totalPertemuan << "x" << endl;
@@ -358,7 +376,7 @@ void deletedatamember(member members[], int &jumlahmember) {
 
 // MAIN PROGRAM
 int main() {
-    User users[MAX_USER] = {
+    user users[MAX_user] = {
         {"risma", "102", "member"},
         {"admin", "milopadel", "admin"}
     };
@@ -386,7 +404,7 @@ int main() {
         
         if (pilihanawal == 1) {
             cout << "\n--- REGISTRASI AKUN ---" << endl;
-            cout << "Username: ";
+            cout << "username: ";
             getline(cin, inputnama);
             
             bool usernameada = false;
@@ -398,7 +416,7 @@ int main() {
             }
             
             if (usernameada) {
-                cout << "[!] Username \"" << inputnama << "\" SUDAH DIGUNAKAN!" << endl;
+                cout << "[!] username \"" << inputnama << "\" SUDAH DIGUNAKAN!" << endl;
                 continue;
             }
             
@@ -414,12 +432,12 @@ int main() {
         }
         
         else if (pilihanawal == 2) {
-            cout << "\n--- LOGIN USER ---" << endl;
+            cout << "\n--- LOGIN user ---" << endl;
             
             bool loginSukses = false;
             
             for (int percobaan = 0; percobaan < 3; percobaan++) {
-                cout << "Username: ";
+                cout << "username: ";
                 getline(cin, inputnama);
                 cout << "Password: ";
                 getline(cin, inputpw);
@@ -446,7 +464,7 @@ int main() {
                 
                 cout << "\n[!] LOGIN GAGAL" << endl;
                 if (!usnbenar) {
-                    cout << "    -> USERNAME GA ADA NIH!" << endl;
+                    cout << "    -> userNAME GA ADA NIH!" << endl;
                 } else {
                     cout << "    -> PASSWORD SALAH!" << endl;
                 }
