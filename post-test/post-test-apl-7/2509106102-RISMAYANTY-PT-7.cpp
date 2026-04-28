@@ -7,7 +7,6 @@
 #include <cmath>
 using namespace std;
 
-// ========== USER-DEFINED LIBRARY (miloutils.h) ==========
 #ifndef MILOUTILS_H
 #define MILOUTILS_H
 
@@ -64,7 +63,7 @@ namespace MiloUtils {
 
 #endif
 
-// ========== RECOMMENDED: ASSERT MACRO FOR DEBUGGING ==========
+
 #define ASSERT(kondisi, pesan) \
     if (!(kondisi)) { \
         stringstream ss; \
@@ -72,7 +71,7 @@ namespace MiloUtils {
            << " | Line: " << __LINE__ << " | Function: " << __func__; \
         throw runtime_error(ss.str()); \
     }
-// ========== END ASSERT MACRO ==========
+
 
 struct user {
     string username;
@@ -268,7 +267,7 @@ void demoPointerInternal(member *m, int idx) {
     tampilkanDetailMemberDenganPointer(m);
 }
 
-// ========== RECOMMENDED: USING STD::SORT WITH LAMBDA ==========
+
 void sortNamaDescending(member arr[], int n) {
     sort(arr, arr + n, [](const member& a, const member& b) {
         return a.nama > b.nama;
@@ -286,7 +285,7 @@ void sortHargaAscending(member arr[], int n) {
         return a.detail.harga < b.detail.harga;
     });
 }
-// ========== END STD::SORT WITH LAMBDA ==========
+
 
 int binarySearchID(member *arr, int n, int target) {
     int low = 0;
@@ -315,7 +314,7 @@ int linearSearchNama(member *arr, int n, string target) {
     return -1;
 }
 
-// ========== RECOMMENDED: USING VECTOR FOR DYNAMIC DATA ==========
+
 vector<string> logAktivitas;
 
 void catatLog(const string& aktivitas) {
@@ -333,7 +332,7 @@ void tampilkanLog() {
     }
     cout << "=====================" << endl;
 }
-// ========== END VECTOR USAGE ==========
+
 
 void buatmember(member members[], int &jumlahmember, string username) {
     try {
